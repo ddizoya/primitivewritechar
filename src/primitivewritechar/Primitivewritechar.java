@@ -46,7 +46,7 @@ public class Primitivewritechar {
 			}
 
 			System.out.println("writeChars ha escrito en total " + dos.size() + " bytes.");
-			System.out.println(tamañoLinea);
+			
 			
 
 		} catch (Exception e) {
@@ -63,29 +63,27 @@ public class Primitivewritechar {
 	}
 
 	public void lectura() {
-
-		if (!file.exists()) {
-			try {
-				file.createNewFile();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 		
 		try {
-			dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(ruta)));
+		
 			dis = new DataInputStream(new BufferedInputStream(new FileInputStream(ruta)));
-
+			int total, restante, leido;
+			total = dis.available();
+			
 			int i = 0;
 			frase = new char[tamañoLinea];
 			while (i < tamañoLinea) {
 				frase[i] = dis.readChar();
 				i++;
 			}
+			/*
+			 * Total = leido + restante
+			 * total - restante = leido
+			 */
+			leido = total - dis.available();
 			
 			System.out.println("\nLeemos la primera frase: " + String.copyValueOf(frase));
-			System.out.println("Tamaño de bytes leidos: " + frase.length);
+			System.out.println("Tamaño de bytes leidos: " + leido);
 			System.out.println("Tamaño por leer: " + dis.available());
 			
 			i = 0;
@@ -94,23 +92,24 @@ public class Primitivewritechar {
 				frase[i] = dis.readChar();
 				i++;
 			}
+			
+			leido = leido - dis.available();
+			
 
 			System.out.println("Leemos la segunda línea: " + String.copyValueOf(frase));
-			System.out.println("Tamaño de bytes: " + frase.length);
+			System.out.println("Tamaño de bytes leídos: " + leido);
 			System.out.println("Por leer: " + dis.available() + " bytes.");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			try {
-				dos.close();
 				dis.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-
 	}
 
 	public static void main(String[] args) {
